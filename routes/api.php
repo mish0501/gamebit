@@ -13,8 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::group(['middleware' => 'auth:api'], function() {
+  Route::get('/user', function (Request $request) {
+      return $request->user();
+  });
 
-Route::post('/friendship', 'FrindshipController@searchFriend');
+  Route::group(['prefix' => 'firendship'], function() {
+    Route::post('/', 'FriendshipController@searchFriend');
+    Route::post('/all', 'FriendshipController@getAllFriends');
+    Route::put('/accept', 'FriendshipController@acceptFriendRequest');
+    Route::put('/deny', 'FriendshipController@denyFriendRequest');
+  });
+});
