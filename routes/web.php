@@ -11,8 +11,10 @@
 |
 */
 
+use App\Events\TestEvent;
+
 Route::get('/', function () {
-    return view('welcome');
+    event(new TestEvent());
 });
 
 Auth::routes();

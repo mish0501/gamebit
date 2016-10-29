@@ -82,6 +82,7 @@
     </div>
 
     <!-- Scripts -->
+    <script src="http://localhost:6001/socket.io/socket.io.js" charset="utf-8"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>

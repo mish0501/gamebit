@@ -18,3 +18,8 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app'
 });
+
+Echo.channel('test')
+    .listen('TestEvent', (e) => {
+        console.log(e);
+    });
