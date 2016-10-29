@@ -15,9 +15,11 @@ require('bootstrap-sass');
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
+import VueRouter from 'vue-router'
 
 window.Vue = require('vue');
 require('vue-resource');
+Vue.use(VueRouter);
 
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of

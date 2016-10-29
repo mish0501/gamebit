@@ -11,12 +11,16 @@
 |
 */
 
+<<<<<<< Updated upstream
 use App\Events\TestEvent;
 
 Route::get('/', function () {
     event(new TestEvent());
 });
+=======
+Route::get('/app/{vue_capture?}', function () {
+    return view('index');
+})->where('vue_capture', '[\/\w\.-]*');
+>>>>>>> Stashed changes
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index');

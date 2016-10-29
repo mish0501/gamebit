@@ -12,14 +12,18 @@ require('./bootstrap');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+import VueRouter from 'vue-router'
+import Home from './components/Home.vue';
 
-Vue.component('example', require('./components/Example.vue'));
+const routes = [
+  { path: '/app/', component: Home }
+];
 
-const app = new Vue({
-    el: '#app'
+const router = new VueRouter({
+  mode: 'history',
+  routes
 });
 
-Echo.channel('test')
-    .listen('TestEvent', (e) => {
-        console.log(e);
-    });
+const app = new Vue({
+  router
+}).$mount('#app');
