@@ -19,9 +19,9 @@ Route::group(['middleware' => 'auth:api'], function() {
   });
 
 
-  
-  Route::post('/create-room', 'NextWordGameController@createRoom');
-  Route::post('/join-room', 'NextWordGameController@joinRoom');
+
+  Route::post('/create-room', 'RoomManagerController@createRoom');
+  Route::post('/join-room', 'RoomManagerController@joinRoom');
 
   Route::group(['prefix' => 'friendship'], function() {
     Route::post('/', 'FriendshipController@searchFriend');

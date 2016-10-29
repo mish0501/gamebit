@@ -9,24 +9,22 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class TestEvent implements ShouldBroadcast
+class UserJoinRoom implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $test = [
-      'asd',
-      'asdasd',
-      'asdasd'
-    ];
+    public $user;
+    public $room_code;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user, $room_code)
     {
-        //
+        $this->$user = $user;
+        $this->room_code = $room_code;
     }
 
     /**
@@ -36,6 +34,6 @@ class TestEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['test'];
+        return new PrivateChannel('room.'.$this->room_code);
     }
 }
