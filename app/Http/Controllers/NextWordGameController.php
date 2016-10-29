@@ -5,18 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\GameRooms;
+use App\GameRoomsParticipants;
 
 class NextWordGameController extends Controller
 {
-    public function createRoom(Request $request, $game_id)
+    public function createRoom(Request $request)
     {
-      // $validator = Validator::make($request->all(), [
-      //     'game_id' => 'required|exists:games,id',
-      // ]);
-      //
-      // if ($validator->fails()) {
-      //     return $validator->errors();
-      // }
+      $validator = Validator::make($request->all(), [
+          'game_id' => 'required|exists:games,id',
+      ]);
+
+      if ($validator->fails()) {
+          return $validator->errors();
+      }
 
       $room = GameRooms::create([
         'room_code' => $this->generateCode(),
@@ -40,7 +41,7 @@ class NextWordGameController extends Controller
       }
     }
 
-    public function joinRoom(Request $request, $room_code)
+    public function joinRoom(Request $request)
     {
       $validator = Validator::make($request->all(), [
           'room_code' => 'required|exists:game_rooms',
@@ -51,9 +52,13 @@ class NextWordGameController extends Controller
       }
 
       $user_id = \Auth::user()->id;
+      $room_id = GameRooms::where('room_code', $room_code)->first()->id;
 
       $joinRoom = GameRoomsParticipants::create([
-        'game_room_id'
+        'game_room_id' => $room_id,
+        'user_id' => $user_id,
       ]);
+
+      return GameRoomsParticipants::all();
     }
 }
