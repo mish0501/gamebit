@@ -11,7 +11,7 @@ class FriendRequestNotification extends Notification
 {
     use Queueable;
 
-    protected $user;
+    public $user;
 
     /**
      * Create a new notification instance.
@@ -31,7 +31,7 @@ class FriendRequestNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['broadcast', 'database'];
+        return ['broadcast'];
     }
 
     /**
@@ -46,6 +46,7 @@ class FriendRequestNotification extends Notification
             'user' => [
                 'id' => $this->user->id,
                 'name' => $this->user->name,
+                'username' => $this->user->username,
             ]
         ];
     }

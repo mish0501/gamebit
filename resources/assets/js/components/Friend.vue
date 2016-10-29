@@ -5,12 +5,14 @@
         <h4 class="panel-title panel-title-button pull-left">Your friends</h4>
 
         <router-link
+          replace
           :to="{ name: 'addFriend' }"
           class="btn btn-default pull-right"
           v-if="$route.name === 'friends'">
           Add friend
         </router-link>
         <router-link
+          replace
           :to="{ name: 'friends' }"
           class="btn btn-primary pull-right"
           v-else>
@@ -30,7 +32,7 @@
             <img class="media-object" src="http://godfatherstyle.com/wp-content/uploads/2016/02/pink-flower-images-and-wallpapers-21..jpg" alt="">
           </div>
           <div class="media-body">
-            <h4 class="media-heading">{{friend.username}}</h4>
+            <h4 class="media-heading">{{friend.name}} ({{friend.username}})</h4>
           </div>
         </div>
       </div>
@@ -46,12 +48,19 @@
       };
     },
 
+    beforeCreate () {
+      this.$http.get('/api/user')
+        .then(null, error => {
+          this.$router.replace({ name: 'home' });
+        });
+    },
+
     mounted () {
       this.$http.post('/api/friendship/all')
         .then(response => {
           const friends = response.data
           if (friends.length === 0) {
-            this.$router.push({ name: 'addFriend' });
+            this.$router.replace({ name: 'addFriend' });
           }
 
           this.friends = friends;

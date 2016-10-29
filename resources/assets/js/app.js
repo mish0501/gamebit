@@ -17,6 +17,9 @@ import App from './components/App.vue';
 import Home from './components/Home.vue';
 import Friend from './components/Friend.vue';
 import AddFriend from './components/AddFriend.vue';
+import FriendRequests from './components/FriendRequests.vue';
+
+Vue.component('friend-requests', FriendRequests);
 
 const routes = [
   {

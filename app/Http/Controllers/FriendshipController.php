@@ -34,6 +34,12 @@ class FriendshipController extends Controller
         ]);
       }
 
+      if ($user->isFriendWith($friend)) {
+        return response()->json([
+          'username' => ['You are already friends.'],
+        ]);
+      }
+
       if ($user->hasSentFriendRequestTo($friend)){
         return response()->json([
           'username' => ['You alredy sent friend request to this person.'],
@@ -64,10 +70,19 @@ class FriendshipController extends Controller
       return $friends;
     }
 
+    public function getFriendRequests()
+    {
+      $user = Auth::user();
+
+      $requests = $user->getFriendRequestUsers();
+
+      return $requests;
+    }
+
     public function acceptFriendRequest(Request $request)
     {
-      $validator = Validator::make($request->all(), [
-          'id' => 'required|exists:user',
+      $validator = \Validator::make($request->all(), [
+          'id' => 'required|exists:users',
       ]);
 
       if ($validator->fails()) {
@@ -79,13 +94,15 @@ class FriendshipController extends Controller
 
       $user->acceptFriendRequest($friend);
 
-      return true;
+      return response()->json([
+        'done' => true,
+      ]);
     }
 
     public function denyFriendRequest(Request $request)
     {
-      $validator = Validator::make($request->all(), [
-          'id' => 'required|exists:user',
+      $validator = \Validator::make($request->all(), [
+          'id' => 'required|exists:users',
       ]);
 
       if ($validator->fails()) {
@@ -97,6 +114,8 @@ class FriendshipController extends Controller
 
       $user->denyFriendRequest($friend);
 
-      return true;
+      return response()->json([
+        'done' => true,
+      ]);
     }
 }

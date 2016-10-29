@@ -5775,4 +5775,13 @@ img.media-object {
   -o-object-fit: cover;
   object-fit: cover; }
 
+.requests-dropdown {
+  max-height: 250px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.request {
+  padding: 15px;
+  width: 275px; }
+
 /*# sourceMappingURL=app.css.map */

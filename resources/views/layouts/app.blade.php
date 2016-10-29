@@ -11,6 +11,7 @@
     <title>{{ config('app.name') }}</title>
 
     <!-- Styles -->
+    <link href="/fa/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
@@ -60,6 +61,7 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li><router-link :to="{ name: 'friends' }">Friends</router-link></li>
+                            <friend-requests></friend-requests>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -89,7 +91,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="http://localhost:6001/socket.io/socket.io.js" charset="utf-8"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>

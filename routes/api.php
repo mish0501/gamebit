@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth:api'], function() {
   Route::group(['prefix' => 'friendship'], function() {
     Route::post('/', 'FriendshipController@searchFriend');
     Route::post('/all', 'FriendshipController@getAllFriends');
+    Route::post('/request', 'FriendshipController@getFriendRequests');
     Route::put('/accept', 'FriendshipController@acceptFriendRequest');
     Route::put('/deny', 'FriendshipController@denyFriendRequest');
   });

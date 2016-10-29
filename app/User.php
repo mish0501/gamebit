@@ -48,4 +48,20 @@ class User extends Authenticatable
     {
         return $this->belongsToMany('App\Avatar');
     }
+
+    public function getFriendRequestUsers()
+    {
+        $requests = $this->getFriendRequests();
+        $requestUsers = [];
+
+        foreach ($requests as $k => $request) {
+            $user = User::find($request->sender_id);
+
+            if ($user->hasSentFriendRequestTo($this)) {
+                array_push($requestUsers, $user);
+            }
+        }
+
+        return $requestUsers;
+    }
 }
