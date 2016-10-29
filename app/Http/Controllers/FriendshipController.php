@@ -19,7 +19,7 @@ class FriendshipController extends Controller
            return $validator->errors();
        }
 
-       $this->requestFriend($request->get('username'));
+       return $this->requestFriend($request->get('username'));
     }
 
     public function requestFriend($friend)
@@ -29,20 +29,24 @@ class FriendshipController extends Controller
       $friend = User::where('username', $friend)->first();
 
       if($user->id == $friend->id){
-        return [
-          'error' => 'You can not sent friend invitation to yourself.',
-        ];
+        return response()->json([
+          'username' => 'You can not sent friend invitation to yourself.',
+        ]);
       }
 
-      if (!$user->hasSentFriendRequestTo($friend)){
-        return [
-          'error' => 'You alredy sent friend request to this person.',
-        ];
+      if ($user->hasSentFriendRequestTo($friend)){
+        return response()->json([
+          'username' => 'You alredy sent friend request to this person.',
+        ]);
       }
 
       $user->befriend($friend);
 
       $friend->notify(new FriendRequestNotification($user));
+
+      return response()->json([
+        'success' => 'Friend request sent.',
+      ]);
     }
 
     public function getAllFriends()
