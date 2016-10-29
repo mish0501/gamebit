@@ -59,7 +59,7 @@ class FriendshipController extends Controller
     {
       $user = Auth::user();
 
-      $friends = $user->getAllFriendships();
+      $friends = $user->getFriends();
 
       return $friends;
     }

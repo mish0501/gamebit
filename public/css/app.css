@@ -5769,4 +5769,10 @@ button.close {
 .panel-title-button {
   line-height: 36px; }
 
+img.media-object {
+  width: 64px;
+  height: 64px;
+  -o-object-fit: cover;
+  object-fit: cover; }
+
 /*# sourceMappingURL=app.css.map */
