@@ -30,13 +30,13 @@ class FriendshipController extends Controller
 
       if($user->id == $friend->id){
         return response()->json([
-          'username' => 'You can not sent friend invitation to yourself.',
+          'username' => ['You can not sent friend invitation to yourself.'],
         ]);
       }
 
       if ($user->hasSentFriendRequestTo($friend)){
         return response()->json([
-          'username' => 'You alredy sent friend request to this person.',
+          'username' => ['You alredy sent friend request to this person.'],
         ]);
       }
 
