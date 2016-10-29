@@ -5766,4 +5766,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
+.panel-title-button {
+  line-height: 36px; }
+
 /*# sourceMappingURL=app.css.map */

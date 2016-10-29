@@ -3,23 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Auth;
 use App\Notifications\FriendRequestNotification;
 
 class FriendshipController extends Controller
 {
-    public function searchFriend(Reuest $request)
+    public function searchFriend(Request $request)
     {
-       $validator = Validator::make($request->all(), [
-           'name' => 'required|exists:user,username',
+       $validator = \Validator::make($request->all(), [
+           'username' => 'required|exists:users,username',
        ]);
 
        if ($validator->fails()) {
            return $validator->errors();
        }
 
-       $this->requestFriend($request->first('username'));
+       $this->requestFriend($request->get('username'));
     }
 
     public function requestFriend($friend)

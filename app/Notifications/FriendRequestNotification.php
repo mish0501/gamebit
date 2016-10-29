@@ -11,14 +11,16 @@ class FriendRequestNotification extends Notification
 {
     use Queueable;
 
+    protected $user;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -41,8 +43,10 @@ class FriendRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'user_id' => $this->user->id,
-            'user_name' => $this->user->name,
+            'user' => [
+                'id' => $this->user->id,
+                'name' => $this->user->name,
+            ]
         ];
     }
 }

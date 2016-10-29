@@ -13,10 +13,27 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 import VueRouter from 'vue-router'
+import App from './components/App.vue';
 import Home from './components/Home.vue';
+import Friend from './components/Friend.vue';
+import AddFriend from './components/AddFriend.vue';
 
 const routes = [
-  { path: '/app/', component: Home }
+  {
+    path: '/app',
+    component: App,
+    children: [
+      { path: '', component: Home, name: 'home' },
+      {
+        path: 'friend',
+        component: Friend,
+        name: 'friends',
+        children: [
+          { path: 'add', component: AddFriend, name: 'addFriend' }
+        ]
+      }
+    ]
+  }
 ];
 
 const router = new VueRouter({
