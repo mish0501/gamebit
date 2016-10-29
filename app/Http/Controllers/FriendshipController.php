@@ -40,6 +40,12 @@ class FriendshipController extends Controller
         ]);
       }
 
+      if ($friend->hasSentFriendRequestTo($user)){
+        return response()->json([
+          'username' => ['This user has already sent you a friend request. Check your notifications.'],
+        ]);
+      }
+
       $user->befriend($friend);
 
       $friend->notify(new FriendRequestNotification($user));
