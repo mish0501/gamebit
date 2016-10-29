@@ -15,3 +15,6 @@ Route::get('/app/{vue_capture?}', function () {
 })->where('vue_capture', '[\/\w\.-]*');
 
 Auth::routes();
+
+Route::get('/create-room/{game_id}', 'NextWordGameController@createRoom');
+Route::get('/join-room/{room_code}', 'NextWordGameController@joinRoom');
