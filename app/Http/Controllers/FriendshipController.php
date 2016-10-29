@@ -28,6 +28,18 @@ class FriendshipController extends Controller
 
       $friend = User::where('username', $friend)->first();
 
+      if($user->id == $friend->id){
+        return [
+          'error' => 'You can not sent friend invitation to yourself.',
+        ];
+      }
+
+      if (!$user->hasSentFriendRequestTo($friend)){
+        return [
+          'error' => 'You alredy sent friend request to this person.',
+        ];
+      }
+
       $user->befriend($friend);
 
       $friend->notify(new FriendRequestNotification($user));
@@ -69,7 +81,7 @@ class FriendshipController extends Controller
       if ($validator->fails()) {
           return $validator->errors();
       }
-      
+
       $user = Auth::user();
       $friend = User::find($request->get('id'));
 
