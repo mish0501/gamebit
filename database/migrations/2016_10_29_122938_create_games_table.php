@@ -17,6 +17,8 @@ class CreateGamesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('description');
+            $table->decimal('bits_reward', 10, 0)->nullable()->default(0);
+            $table->integer('xp_reward')->unsigned()->nullable()->default(0);
             $table->timestamps();
         });
     }

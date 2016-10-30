@@ -14,6 +14,7 @@ class GamesTableSeeder extends Seeder
         App\Games::create([
           'name' => 'Next Word',
           'description' => "A group of players, each one is typing a word which is within the meaning of the previous player's word.",
+          'xp_reward' => 20,
         ]);
     }
 }

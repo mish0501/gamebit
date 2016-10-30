@@ -12,7 +12,7 @@ class Games extends Model
    * @var array
    */
   protected $fillable = [
-      'name', 'description'
+      'name', 'description', 'bits_reward', 'xp_reward'
   ];
 
   public function game_rooms()
