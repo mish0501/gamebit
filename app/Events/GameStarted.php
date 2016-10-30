@@ -9,22 +9,22 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UserJoinRoom implements ShouldBroadcast
+class GameStarted
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $user;
-    public $room_code;
+    private $room_code;
+    public $players;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($user, $room_code)
+    public function __construct($room_code, $players)
     {
-        $this->user = $user;
         $this->room_code = $room_code;
+        $this->players = $players;
     }
 
     /**

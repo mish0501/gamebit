@@ -7,19 +7,21 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class FriendRequestNotification extends Notification
+class InviteFriendNotification extends Notification
 {
     use Queueable;
 
-    public $user;
+    private $room_code;
+    private $user;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($room_code, $user)
     {
+        $this->room_code = $room_code;
         $this->user = $user;
     }
 
@@ -43,10 +45,11 @@ class FriendRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'username' => $this->user->username,
+            "room_code" => $this->room_code,
+            "user" => [
+              "name" => $this->user->name,
+              "username" => $this->user->username,
+              "id" => $this->user->id
             ]
         ];
     }

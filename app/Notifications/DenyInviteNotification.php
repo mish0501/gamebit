@@ -7,11 +7,11 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class FriendRequestNotification extends Notification
+class DenyInviteNotification extends Notification
 {
     use Queueable;
 
-    public $user;
+    private $user;
 
     /**
      * Create a new notification instance.
@@ -31,7 +31,7 @@ class FriendRequestNotification extends Notification
      */
     public function via($notifiable)
     {
-        return ['broadcast', 'database'];
+        return ['broadcast'];
     }
 
     /**
@@ -44,9 +44,7 @@ class FriendRequestNotification extends Notification
     {
         return [
             'user' => [
-                'id' => $this->user->id,
-                'name' => $this->user->name,
-                'username' => $this->user->username,
+              'name' => $this->user->name,
             ]
         ];
     }

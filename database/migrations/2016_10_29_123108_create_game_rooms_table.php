@@ -17,8 +17,9 @@ class CreateGameRoomsTable extends Migration
             $table->increments('id');
             $table->integer('game_id')->unsigned();
             $table->integer('room_code')->unsigned();
+            $table->integer('limit_players')->unsigned()->default(10);
+            $table->integer('status')->unsigned()->default(0);
             $table->timestamps();
-
 
             $table->foreign('game_id')->references('id')->on('games');
         });

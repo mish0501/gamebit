@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Validator;
 use App\GameRooms;
 use App\GameRoomsParticipants;
+
 use App\Events\UserJoinRoom;
+use App\Notifications\InviteFriendNotification;
+use App\Notifications\DenyInviteNotification;
 
 class RoomManagerController extends Controller
 {
@@ -52,14 +55,83 @@ class RoomManagerController extends Controller
         return $validator->errors();
     }
 
-    $user_id = \Auth::user()->id;
-    $room_id = GameRooms::where('room_code', $room_code)->first()->id;
+    // TODO
+    // if ($request->has('name')) {
+    //   $name = $request->get('name');
+    //
+    //   $user = App\User::create([
+    //     'name' => $name,
+    //     'email' => null,
+    //     'username' => null,
+    //     'password' => null,
+    //   ]);
+    //
+    //   \Auth::login($user);
+    // }
 
-    $joinRoom = GameRoomsParticipants::create([
-      'game_room_id' => $room_id,
-      'user_id' => $user_id,
+
+    $user_id = \Auth::user()->id;
+    $room = GameRooms::where('room_code', $room_code)->first();
+
+    $room_id = $room->id;
+    $room_limit = $room->limit;
+
+    $limit = GameRoomsParticipants::find($room_id)->count();
+
+    if($room_limit >= $limit){
+      $joinRoom = GameRoomsParticipants::create([
+        'game_room_id' => $room_id,
+        'user_id' => $user_id,
+      ]);
+
+      event(new UserJoinRoom($user, $room_code));
+    }else{
+      return response()->json([
+        'error' => "This room is full."
+      ]);
+    }
+  }
+
+  public function inviteFriend(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+        'room_code' => 'required|exists:game_rooms',
+        'friend_id' => 'required|exists:users,id',
     ]);
 
-    event(new UserJoinRoom($user, $room_code));
+    if ($validator->fails()) {
+        return $validator->errors();
+    }
+
+    $user = \Auth::user();
+    $friend = User::find($request->get('friend_id'));
+
+    $friend->notify(new InviteFriendNotification($request->get('room_code'), $user));
+  }
+
+  public function denyInvite(Request $reuest)
+  {
+    $validator = Validator::make($request->all(), [
+        'friend_id' => 'required|exists:users,id',
+        'notification_id' => 'required|exists:notifications,id'
+    ]);
+
+    if ($validator->fails()) {
+        return $validator->errors();
+    }
+
+    $user = \Auth::user();
+    $friend = User::find($request->get('friend_id'));
+
+    $friend->notify(new DenyInviteNotification($user));
+
+    $notification = $user->notifications()->where('id', $request->get('notification_id'))->first();
+    if($notification){
+      $notification->delete();
+
+      return response()->json([
+        'done' => true,
+      ]);
+    }
   }
 }

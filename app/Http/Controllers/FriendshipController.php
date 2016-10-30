@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use Validator;
 use App\Notifications\FriendRequestNotification;
 
 class FriendshipController extends Controller
 {
     public function searchFriend(Request $request)
     {
-       $validator = \Validator::make($request->all(), [
+       $validator = Validator::make($request->all(), [
            'username' => 'required|exists:users,username',
        ]);
 
@@ -81,8 +82,9 @@ class FriendshipController extends Controller
 
     public function acceptFriendRequest(Request $request)
     {
-      $validator = \Validator::make($request->all(), [
+      $validator = Validator::make($request->all(), [
           'id' => 'required|exists:users',
+          'notification_id' => 'required|exists:notifications,id'
       ]);
 
       if ($validator->fails()) {
@@ -94,6 +96,11 @@ class FriendshipController extends Controller
 
       $user->acceptFriendRequest($friend);
 
+      $notification = $user->notifications()->where('id', $request->get('notification_id'))->first();
+      if($notification){
+        $notification->delete();
+      }
+
       return response()->json([
         'done' => true,
       ]);
@@ -101,8 +108,9 @@ class FriendshipController extends Controller
 
     public function denyFriendRequest(Request $request)
     {
-      $validator = \Validator::make($request->all(), [
+      $validator = Validator::make($request->all(), [
           'id' => 'required|exists:users',
+          'notification_id' => 'required|exists:notifications,id'
       ]);
 
       if ($validator->fails()) {
@@ -113,6 +121,11 @@ class FriendshipController extends Controller
       $friend = User::find($request->get('id'));
 
       $user->denyFriendRequest($friend);
+
+      $notification = $user->notifications()->where('id', $request->get('notification_id'))->first();
+      if($notification){
+        $notification->delete();
+      }
 
       return response()->json([
         'done' => true,
