@@ -18,6 +18,7 @@ import Home from './components/Home.vue';
 import Friend from './components/Friend.vue';
 import AddFriend from './components/AddFriend.vue';
 import FriendRequests from './components/FriendRequests.vue';
+import Game from './components/Game.vue';
 
 Vue.component('friend-requests', FriendRequests);
 
@@ -34,6 +35,11 @@ const routes = [
         children: [
           { path: 'add', component: AddFriend, name: 'addFriend' }
         ]
+      },
+      {
+        path: 'game/:id',
+        component: Game,
+        name: 'game'
       }
     ]
   }
