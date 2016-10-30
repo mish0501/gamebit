@@ -13,6 +13,7 @@ class UserController extends Controller
 
     public function getUserNotifications(Request $request)
     {
-      return $request->user()->notifications();
+      $user = \Auth::user();
+      return $user->notifications;
     }
 }

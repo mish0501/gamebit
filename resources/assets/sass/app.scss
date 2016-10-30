@@ -8,7 +8,17 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+// Base
+@import "base";
+
 // Custom
 @import "customs/panel";
 @import "customs/media";
 @import "customs/dropdown";
+@import "customs/buttons";
+@import "customs/input-groups";
+@import "customs/navbar";
+
+@import "create-game";
+@import "games";
+@import "home";

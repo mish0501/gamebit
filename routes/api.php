@@ -13,16 +13,21 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::group(['prefix' => 'game'], function() {
+  Route::post('/', 'GameController@getGame');
+  Route::post('/all', 'GameController@getGames');
+});
+
 Route::group(['middleware' => 'auth:api'], function() {
   Route::group(['prefix' => '/user'], function() {
     Route::get('/', 'UserController@getAuthUser');
-    Route::get('/notifications', 'UserController@getUserNotifications');
+    Route::post('/notifications', 'UserController@getUserNotifications');
   });
 
-  Route::post('/game', 'GameController@getGames');
-
-  Route::post('/create-room', 'RoomManagerController@createRoom');
-  Route::post('/join-room', 'RoomManagerController@joinRoom');
+  Route::group(['prefix' => 'room'], function() {
+    Route::post('/', 'RoomManagerController@createRoom');
+    Route::put('/join', 'RoomManagerController@joinRoom');
+  });
 
   Route::group(['prefix' => 'friendship'], function() {
     Route::post('/', 'FriendshipController@searchFriend');

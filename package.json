@@ -14,7 +14,8 @@
     "lodash": "^4.16.2",
     "vue": "^2.0.1",
     "vue-resource": "^1.0.3",
-    "vue-router": "^2.0.1"
+    "vue-router": "^2.0.1",
+    "vuex": "^2.0.0"
   },
   "dependencies": {
     "laravel-echo": "^1.1.1",

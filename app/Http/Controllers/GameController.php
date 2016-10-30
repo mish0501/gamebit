@@ -16,4 +16,18 @@ class GameController extends Controller
 
         return $games;
     }
+
+    public function getGame (Request $request) {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:games',
+        ]);
+
+        if ($validator->fails()) {
+            return $validator->errors();
+        }
+
+        $game = Games::find($request->get('id'));
+
+        return $game;
+    }
 }

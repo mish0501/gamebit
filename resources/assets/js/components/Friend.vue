@@ -2,7 +2,7 @@
   <div class="col-md-8 col-md-offset-2">
     <div class="panel panel-default">
       <div class="panel-heading clearfix">
-        <h4 class="panel-title panel-title-button pull-left">Your friends</h4>
+        <h3 class="panel-title panel-title-button pull-left">Your friends</h3>
 
         <router-link
           replace
@@ -23,11 +23,11 @@
       <div class="panel-body">
         <router-view></router-view>
 
-        <div class="alert alert-info" role="alert" v-if="friends.length === 0">
+        <div class="alert alert-info" role="alert" v-if="$store.getters.allFriends.length === 0">
           No friends bro.
         </div>
 
-        <div class="media" v-for="friend in friends">
+        <div class="media" v-for="friend in $store.getters.allFriends">
           <div class="media-left">
             <img class="media-object" src="http://godfatherstyle.com/wp-content/uploads/2016/02/pink-flower-images-and-wallpapers-21..jpg" alt="">
           </div>
@@ -42,31 +42,18 @@
 
 <script>
   export default {
-    data () {
-      return {
-        friends: []
-      };
+    computed: {
+      isNotAuthUser () {
+        return this.$store.getters.authUser.id === 0;
+      }
     },
 
-    beforeCreate () {
-      this.$http.get('/api/user')
-        .then(null, error => {
-          this.$router.replace({ name: 'home' });
-        });
-    },
-
-    mounted () {
-      this.$http.post('/api/friendship/all')
-        .then(response => {
-          const friends = response.data
-          if (friends.length === 0) {
-            this.$router.replace({ name: 'addFriend' });
-          }
-
-          this.friends = friends;
-        }, error => {
-          console.error(error);
-        });
+    watch: {
+      isNotAuthUser (isNotAuthUser) {
+        if (isNotAuthUser) {
+          this.$router.replace({ name: 'games' });
+        }
+      }
     }
   }
 </script>

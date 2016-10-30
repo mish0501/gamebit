@@ -10,6 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Notifications\InviteFriendNotification;
+
+Route::get('/', function () {
+    return view('index');
+});
+
 Route::get('/app/{vue_capture?}', function () {
     return view('index');
 })->where('vue_capture', '[\/\w\.-]*');

@@ -25,10 +25,20 @@ class RoomManagerController extends Controller
 
     $room = GameRooms::create([
       'room_code' => $this->generateCode(),
-      'game_id' => $game_id,
+      'game_id' => $request->get('game_id'),
     ]);
 
-    return $room;
+    $user = \Auth::user();
+    $user_id = $user->id;
+    $room = GameRooms::where('room_code', $room->room_code)->first();
+    $joinRoom = GameRoomsParticipants::create([
+      'game_room_id' => $room->id,
+      'user_id' => $user_id,
+    ]);
+
+    event(new UserJoinRoom($user, $room->room_code));
+
+    return $room->room_code;
   }
 
   public function generateCode()
@@ -69,27 +79,41 @@ class RoomManagerController extends Controller
     //   \Auth::login($user);
     // }
 
+    $user = \Auth::user();
+    $user_id = $user->id;
+    $room = GameRooms::where('room_code', $request->get('room_code'))->first();
 
-    $user_id = \Auth::user()->id;
-    $room = GameRooms::where('room_code', $room_code)->first();
+    if ($request->has('notification_id')) {
+      $notification = $user->notifications()->where('id', $request->get('notification_id'))->first();
+
+      if ($notification) {
+        $notification->delete();
+      }
+    }
 
     $room_id = $room->id;
     $room_limit = $room->limit;
 
-    $limit = GameRoomsParticipants::find($room_id)->count();
+    $players = GameRoomsParticipants::find($room_id);
 
-    if($room_limit >= $limit){
-      $joinRoom = GameRoomsParticipants::create([
-        'game_room_id' => $room_id,
-        'user_id' => $user_id,
-      ]);
+    if($players !== null){
+      if($room_limit >= $players->count()){
+        $joinRoom = GameRoomsParticipants::create([
+          'game_room_id' => $room_id,
+          'user_id' => $user_id,
+        ]);
 
-      event(new UserJoinRoom($user, $room_code));
-    }else{
-      return response()->json([
-        'error' => "This room is full."
-      ]);
+        event(new UserJoinRoom($user, $room_code));
+      }else{
+        return response()->json([
+          'error' => "This room is full."
+        ]);
+      }
     }
+
+    return response()->json([
+      'join' => true
+    ]);
   }
 
   public function inviteFriend(Request $request)

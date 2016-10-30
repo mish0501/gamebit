@@ -15,7 +15,7 @@ require('bootstrap-sass');
  * using reactive data binding and reusable components. Vue's API is clean
  * and simple, leaving you to focus on building your next great project.
  */
-import VueRouter from 'vue-router'
+import VueRouter from 'vue-router';
 
 window.Vue = require('vue');
 require('vue-resource');
